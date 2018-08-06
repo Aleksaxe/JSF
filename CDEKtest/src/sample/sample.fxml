@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="351.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+  <children>
+    <TableView layoutX="14.0" layoutY="14.0" prefHeight="342.0" prefWidth="323.0">
+      <columns>
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="60.0" text="id" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="257.0" text="Name" />
+      </columns>
+    </TableView>
+    <TextField alignment="CENTER" layoutX="14.0" layoutY="362.0" prefWidth="323.0" text="name" />
+    <Button layoutX="14.0" layoutY="384.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="162.0" text="Add user" />
+    <Button layoutX="176.0" layoutY="384.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="162.0" text="Serch user" />
+  </children>
+</AnchorPane>
