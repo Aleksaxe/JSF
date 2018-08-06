@@ -43,16 +43,7 @@ public class Controller {
 
     @FXML
     void initialize() {
-        addButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                data.add(new User(
-                        idColum.getText(),
-                        nameColum.getText(),
 
-
-            }
-        });
 
     }
 

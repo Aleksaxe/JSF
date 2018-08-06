@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Main extends Application {
+
     public static TableView<User> table = new TableView<User>();
     private final ObservableList<User> data =
             FXCollections.observableArrayList(
