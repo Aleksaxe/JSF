@@ -1,17 +1,18 @@
 package sample;
-
+//Модель данных
 public class User {
-    private int ID;
+    private String ID;
     private String Name;
-    User(int ID,String Name){
+    User(String ID,String Name){
         this.ID=ID;
         this.Name=Name;
     }
-    public int getID() {
+
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
     }
 
