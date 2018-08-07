@@ -8,10 +8,7 @@ import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 // контроллер связующий GUI
@@ -50,6 +47,9 @@ public class Controller {
         String s = (String) textField.getText();
         return s;
     }
+    public void setTextField() {
+        textField.setText("");
+    }
 
     @FXML
     void initialize() throws SQLException, ClassNotFoundException {
@@ -61,23 +61,38 @@ public class Controller {
         table.setItems(observableList);
 
         addButton.setOnAction(event -> {
-            String sqlInsert = "insert into users (Name) value ('" + getTextField() + "')";
-            try {
-                refreshAndAdd(sqlInsert);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            if(getTextField().equals("")) {
+
+            }else {
+                String sqlInsert = "insert into users (Name) value ('" + getTextField() + "')";
+                try {
+                    refreshAndAdd(sqlInsert);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
+            setTextField();//очистка TextField После каждого ввода
+
 
         });
 
         searchButton.setOnAction(event -> {
-            String sqlSearch = "select * from users where Name='" + getTextField() + "'";
-            try {
-                search(sqlSearch);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (getTextField().equals("")){
+                try {
+                    search(sqlAllSearch);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                String sqlSearch = "select * from users where Name='" + getTextField() + "'";
+                try {
+                    search(sqlSearch);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
