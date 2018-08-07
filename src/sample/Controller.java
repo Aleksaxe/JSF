@@ -13,12 +13,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+
 // контроллер связующий GUI
 public class Controller {
 
-    public  String sqlAllSearch = "select * from users";
+    public String sqlAllSearch = "select * from users";
     Connection con = DBWorker.getConnection();//Коннект к БД
-    Statement statement = con.createStatement();
+    Statement statement = con.createStatement();//опеределяем контейнер для sql выражений
+    //Коллекция для хранения данных из БД
+    ObservableList<User> observableList = FXCollections.observableArrayList();//специальная javaFX коллекция
+
     // Инициализация кнопок интервейса
     @FXML
     private TableView<User> table;
@@ -29,15 +33,8 @@ public class Controller {
     @FXML
     private TableColumn<User, String> nameColum;
 
-    public Controller() throws SQLException, ClassNotFoundException {
-    }
-
-    public String getTextField() {
-        String s = (String) textField.getText();
-        return s;
-    }
-
     @FXML
+    //Поле для добавления и поиска данных
     private TextField textField;
 
     @FXML
@@ -46,15 +43,21 @@ public class Controller {
     @FXML
     private Button searchButton;
 
+    public Controller() throws SQLException, ClassNotFoundException {
+    }
 
-    ObservableList<User> observableList = FXCollections.observableArrayList();
-
+    public String getTextField() {//метод забирающий строку поля ввода TextField
+        String s = (String) textField.getText();
+        return s;
+    }
 
     @FXML
     void initialize() throws SQLException, ClassNotFoundException {
-        search(sqlAllSearch);
+        search(sqlAllSearch);//Вывести все данные
+        //Способ отображения данных в ячейках таблицы
         idColum.setCellValueFactory(new PropertyValueFactory<>("ID"));
         nameColum.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        //передать экземпляр в таблицу
         table.setItems(observableList);
 
         addButton.setOnAction(event -> {
@@ -78,26 +81,27 @@ public class Controller {
             }
         });
     }
-//Метод обновляющий tableView при любом действии \старте программы
+
+
     void refreshAndAdd(String s) throws SQLException, ClassNotFoundException {
-    observableList.clear();
-        String someSql=s;
+        String someSql = s;
         try {
 
-            statement.execute(someSql);
-            con.createStatement().executeQuery(sqlAllSearch);
-            observableList.clear();
+            statement.execute(someSql);//sql запрос на добавление
+            con.createStatement().executeQuery(sqlAllSearch);//запрос на вывод таблицы
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        search(sqlAllSearch);
+        search(sqlAllSearch);// вывод обновленной таблицы
     }
+
     void search(String s) throws SQLException {
-        observableList.clear();
-        String someSql=s;
+        observableList.clear();//очистка таблицы перед выводом обновленной таблицы
+        String someSql = s;
         ResultSet[] resultSet = {con.createStatement().executeQuery(someSql)};
+
         while (resultSet[0].next()) {
             observableList.add(new User(resultSet[0].getString("ID"),
                     resultSet[0].getString("Name")));
