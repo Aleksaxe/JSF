@@ -15,8 +15,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 public class Controller {
-
-
+    public  String sqlAllSearch = "select * from users";
+    Connection con = DBWorker.getConnection();
     @FXML
     private TableView<User> table;
 
@@ -26,9 +26,12 @@ public class Controller {
     @FXML
     private TableColumn<User, String> nameColum;
 
-    public String getTextField() {
+    public Controller() throws SQLException, ClassNotFoundException {
+    }
 
-        return textField.getText();
+    public String getTextField() {
+        String s = (String) textField.getText();
+        return s;
     }
 
     @FXML
@@ -46,28 +49,52 @@ public class Controller {
 
     @FXML
     void initialize() throws SQLException, ClassNotFoundException {
-        Connection con = DBWorker.getConnection();
-        addButton.setOnAction(event -> {
-            String sqlInsert="insert into users (Name) value ('"+getTextField()+"')";
-            try {
-                Statement statement = con.createStatement();
-                statement.execute(sqlInsert);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            // System.out.println(getTextField());Проверка отработавшего getTextField
-        });
-
-
-
-            String sqlSearch="select from users where Name='name'";
-        ResultSet resultSet = con.createStatement().executeQuery(sqlSearch);
-        while (resultSet.next()) {
-            observableList.add(new User(resultSet.getString("ID"), resultSet.getString("Name")));
-        }
+        refresh(sqlAllSearch);
         idColum.setCellValueFactory(new PropertyValueFactory<>("ID"));
         nameColum.setCellValueFactory(new PropertyValueFactory<>("Name"));
         table.setItems(observableList);
+
+        addButton.setOnAction(event -> {
+            String sqlInsert = "insert into users (Name) value ('" + getTextField() + "')";
+            try {
+                refresh(sqlInsert);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        searchButton.setOnAction(event -> {
+            String sqlSearch = "select * from users where Name='" + getTextField() + "'";
+            try {
+                refresh(sqlSearch);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    void refresh(String s) throws SQLException, ClassNotFoundException {
+        String someSql=s;
+        try {
+            Statement statement = con.createStatement();
+            statement.execute(someSql);
+            con.createStatement().executeQuery(someSql);
+            observableList.clear();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ResultSet[] resultSet = {con.createStatement().executeQuery(someSql)};
+        while (resultSet[0].next()) {
+            observableList.add(new User(resultSet[0].getString("ID"),
+                    resultSet[0].getString("Name")));
+        }
     }
 
 
