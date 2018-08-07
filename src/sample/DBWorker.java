@@ -2,21 +2,19 @@ package sample;
 
 import java.sql.*;
 
+//Связь с БД
 public class DBWorker {
-   // private final String sqlState;
 
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
-        ConData conData = new ConData();
-        Connection connection = DriverManager.getConnection(conData.getURL(), conData.getUSERNAME(), conData.getPASSWORD());
-        if (!connection.isClosed()) System.out.println("FUCK");
+        ConData conData = new ConData();//Экземпялр Модели хранения данных для подключения к БД
+
+        // Коннектор соеденящий программу и базу
+        Connection connection = DriverManager.getConnection(conData.getURL(),
+                conData.getUSERNAME(), conData.getPASSWORD());
+
+        if (!connection.isClosed()) System.out.println("It's alive");//Проверка установки соединения
 
         return connection;
     }
-/*
-    public DBWorker(String sqlState) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-
-    }
-*/
 
 }

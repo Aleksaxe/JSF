@@ -1,5 +1,5 @@
 package sample;
-
+//Модель данных
 public class User {
     private String ID;
     private String Name;
@@ -7,6 +7,7 @@ public class User {
         this.ID=ID;
         this.Name=Name;
     }
+
     public String getID() {
         return ID;
     }
